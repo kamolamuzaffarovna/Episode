@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'styles/episodes.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'styles/episodes_responsive.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-md-center bg-white py-5">
+        <div class="background_image" style="background-image:url({% static 'images/index.jpg' %})"></div>
+        <div class="col-md-6">
+            <div class="justify-content-end mt-5">
+                <h1 style="margin-bottom: 70px " class="text-danger">Are you sure to logout ?</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row d-flex gap-2 justify-content-end">
+                        <button class="btn btn-outline-danger mt-1" type="submit">LOGOUT</button>
+                        <a href="{% url 'core:home' %}" class="btn btn-outline-info mt-1">NO. THANKS !</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"
+            integrity="sha512-g0etrk7svX8WYBp+ZDIqeenmkxQSXjRDTr08ie37rVFc99iXFGxmD0/SCt3kZ6sDNmr8sR0ISHkSAc/M8rQBqg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"
+            integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'js/episodes.js' %}"></script>
+{% endblock %}

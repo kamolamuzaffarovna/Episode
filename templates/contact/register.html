@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    {{ block.super }}
+    <link href="{% static 'styles/episodes.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'styles/episodes_responsive.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-md-center bg-white py-5">
+        <div class="background_image" style="background-image:url({% static 'images/index.jpg' %})"></div>
+        <div class="col-md-6">
+            <div class="container mt-5">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="floatingInput" placeholder="Name">
+                            <label for="floatingInput">Your Name</label>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="floatingPassword1"
+                                       placeholder="Password">
+                                <label for="floatingPassword1">Password</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="floatingPassword2"
+                                       placeholder="Password">
+                                <label for="floatingPassword2">Confirm Password</label>
+                            </div>
+                        </div>
+                        <div class="justify-content-between d-flex">
+                            <div class="mt-2">
+                                <span>If you have an account <a href="{% url 'contact:login' %}">LOGIN</a></span>
+                            </div>
+                            <button type="submit" class="btn btn-outline-info">REGISTER</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jplayer/2.9.2/jplayer/jquery.jplayer.min.js"
+            integrity="sha512-g0etrk7svX8WYBp+ZDIqeenmkxQSXjRDTr08ie37rVFc99iXFGxmD0/SCt3kZ6sDNmr8sR0ISHkSAc/M8rQBqg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"
+            integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'js/episodes.js' %}"></script>
+{% endblock %}]
+
