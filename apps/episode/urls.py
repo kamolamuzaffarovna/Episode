@@ -6,6 +6,6 @@ app_name = 'episode'
 
 urlpatterns = [
     path('list/', EpisodeListView.as_view(), name='list'),
-    path('detail/<slug:slug>/', EpisodeDetailView.as_view(), name='detail'),
+    path('detail/', EpisodeDetailView.as_view(), name='detail'),
     path('music/', EpisodePlaylist.as_view(), name='playlist')
 ]

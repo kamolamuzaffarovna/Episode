@@ -31,20 +31,19 @@ class Episode(BaseModel):
 
     @property
     def music_absolute_path(self):
-        return os.getenv('SITE_DOMAIN') + self.music.url
+        return self.music.url
 
 
 class Comment(BaseModel):
     episode = models.ForeignKey(Episode, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='comment/')
-    name = models.CharField(max_length=221, null=True, blank=True)
     message = models.TextField()
-    parent = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
     top_level_comment_id = models.IntegerField(null=True, blank=True)
 
     @property
-    def children(self):
+    def get_children(self):
         model = self.__class__
         return model.objects.filter(top_level_comment_id=self.id)
 

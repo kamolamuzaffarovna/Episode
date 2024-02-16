@@ -17,8 +17,10 @@
                 <div class="row">
                     <div class="col">
                         <div class="home_content text-center">
-                            <div class="home_title"><h1>{{ object.title }}</h1></div>
-                            <div class="home_subtitle text-center">{{ object.created_date|date:'d F, Y' }}</div>
+                            {% for object in episodes %}
+                                <div class="home_title"><h1>{{ object.title }}</h1></div>
+                                <div class="home_subtitle text-center">{{ object.created_date|date:'d F, Y' }}</div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -34,7 +36,9 @@
 
                                 <div class="single_player_container">
                                     <div class="single_player d-flex flex-row align-items-center justify-content-start">
-                                        <div id="jplayer_{{ object.id }}" class="jp-jplayer" data-object-id="{{ object.id }}" data-music-path="{{ object.music_absolute_path }}"></div>
+                                        <div id="jplayer_{{ object.id }}" class="jp-jplayer"
+                                             data-object-id="{{ object.id }}"
+                                             data-music-path="{{ object.music_absolute_path }}"></div>
                                         <div id="jp_container_{{ object.id }}" class="jp-audio" role="application"
                                              aria-label="media player">
                                             <div class="jp-type-single">
@@ -82,7 +86,8 @@
                                         <div class="show_fav_icon show_info_icon"><img class="svg"
                                                                                        src="{% static 'images/heart.svg' %}"
                                                                                        alt></div>
-                                        <div class="show_fav_count">{{ object.likes.count }}</div>
+                                        <div class="show_fav_count">
+                                            {% for object in likes %}{{ object.likes.count }}{% endfor %}</div>
                                     </div>
                                     <div class="show_comments">
                                         <a href="#">
@@ -90,7 +95,8 @@
                                                 <div class="show_comments_icon show_info_icon"><img class="svg"
                                                                                                     src="{% static 'images/speech-bubble.svg' %}"
                                                                                                     alt></div>
-                                                <div class="show_comments_count">{{ object.comments.count }}</div>
+                                                <div class="show_comments_count">{% for object in comments %}
+                                                    {{ object.comments.count }}{% endfor %}</div>
                                             </div>
                                         </a>
                                     </div>
@@ -109,8 +115,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-
-                    <div class="episode_image"><img src="{{ object.image.url }}" alt></div>
+                    {% for object in episodes %}
+                        <div class="episode_image"><img src="{{ object.image.url }}" alt></div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -124,8 +131,8 @@
                 <div class="sidebar_list">
                     <div class="sidebar_title">Categories</div>
                     <ul>
-                        {% for category in categories %}
-                            <li><a href="#">{{ category }}</a></li>
+                        {% for object in categories %}
+                            <li><a href="#">{{ object.title }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -134,8 +141,8 @@
                     <div class="sidebar_title">Tags</div>
                     <div class="tags">
                         <ul class="d-flex flex-row align-items-start justify-content-start flex-wrap">
-                            {% for tag in tags %}
-                                <li><a href="#">music</a></li>
+                            {% for object in tags %}
+                                <li><a href="#">{{ object.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -163,51 +170,62 @@
 
         <div class="col-lg-9 episode_col order-lg-2 order-1">
             <div class="intro">
-                <div class="section_title">{{ object.title }}</div>
+                <div class="section_title">{% for object in episodes %}{{ object.title }}{% endfor %}</div>
                 <div class="intro_text">
-                    <p>{{ object.content }}</p>
+                    <p>{% for object in episodes %}{{ object.content }}{% endfor %}</p>
                 </div>
             </div>
             <div class="comments">
-                <div class="section_title">Comments</div>
+                <div class="section_title">
+                    {% if comments %}
+                        Comments
+                    {% else %}
+                        No Comments
+                    {% endif %}
+                </div>
                 <div class="comments_container">
                     <ul>
-                        <div class="d-flex flex-row">
-                            <div>
-                                <div class="comment_image"><img src="{% static 'images/user_2.jpg' %}" alt>
+                        {% for object in comments %}
+                            <div class="d-flex flex-row">
+                                <div>
+                                    <div class="comment_image"><img src="
+
+                                            {% if object.author.profilepicture %}{{ object.profilepicture.picture.url }}{% else %}{% static 'images/user_2.jpg' %}{% endif %}"
+                                                                    alt>
+                                    </div>
+                                </div>
+                                <div class="comment_content">
+                                    <div class="user_name"><a href="#">{{ object.author.username }}</a></div>
+                                    <div class="comment_text">
+                                        <p>{{ object.message }}</p>
+                                        <button type="submit" class="btn btn-outline-info mt-1">Reply</button>
+
+                                    </div>
+                                    <ul class="children mt-3">
+                                        {% for child in comments.children.all %}
+                                            <li class="d-flex flex-row">
+                                                <div class="comment_image">
+                                                    <img src="{% if child.author.profilpicture %}{{ child.author.profilepicture.picture.url }}{% else %}{% static 'images/episode_1.jpg' %}{% endif %}"
+                                                         alt="Image placeholder">
+                                                </div>
+                                                <div class="comment_content">
+                                                    <div class="user_name"><a
+                                                            href="#">{{ children.author.username }}</a>
+                                                    </div>
+
+                                                    <div class="comment_text">
+                                                        <p>{{ child.message }}</p>
+                                                        <button type="submit" class="btn btn-outline-info mt-1">
+                                                            Reply
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="comment_content">
-                                <div class="user_name"><a href="#">Christinne Doe</a></div>
-                                <div class="comment_text">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec bibendum
-                                        malesuada tellus a pretium. Proin quam nisi, maximus in pulvinar sed,
-                                        viverra vitae es.</p>
-                                    <button type="submit" class="btn btn-outline-info mt-1">Reply</button>
-
-                                </div>
-                                <ul class="children mt-3">
-                                    <li class="d-flex flex-row">
-                                        <div class="comment_image">
-                                            <img src="{% static 'images/episode_1.jpg' %}" alt="Image placeholder">
-                                        </div>
-                                        <div class="comment_content">
-                                            <div class="user_name"><a href="#">Christinne Doe</a></div>
-
-                                            <div class="comment_text">
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                                                    bibendum
-                                                    malesuada tellus a pretium. Proin quam nisi, maximus in pulvinar
-                                                    sed,
-                                                    viverra vitae es.</p>
-                                                <button type="submit" class="btn btn-outline-info mt-1">Reply</button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
+                        {% endfor %}
                         <div class="comment_form_container">
                             <div class="section_title">Leave a comment</div>
 

@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="episode_content">
-                                <div class="episode_name"><a href="{% url 'episode:detail' object.slug %}">{{ object.title }}</a></div>
+                                <div class="episode_name"><a href="{% url 'episode:detail' %}">{{ object.title }}</a></div>
                                 <div class="episode_date"><a href="#">{{ object.created_date|date:'d F, Y'}}</a></div>
                                 <div class="show_info d-flex flex-row align-items-start justify-content-start">
                                     <div class="show_fav d-flex flex-row align-items-center justify-content-start">

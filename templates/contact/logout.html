@@ -8,16 +8,27 @@
 {% endblock %}
 
 {% block content %}
+
+    <div class="home">
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'images/about (1).jpg' %}"
+             data-speed="0.8"></div>
+        <div class="home_container d-flex flex-column align-items-center justify-content-center">
+            <div class="home_content">
+                <div class="home_title"><h1>Logout Page</h1></div>
+            </div>
+        </div>
+    </div>
+
     <div class="row justify-content-md-center bg-white py-5">
-        <div class="background_image" style="background-image:url({% static 'images/index.jpg' %})"></div>
         <div class="col-md-6">
             <div class="justify-content-end mt-5">
                 <h1 style="margin-bottom: 70px " class="text-danger">Are you sure to logout ?</h1>
                 <form method="post">
                     {% csrf_token %}
                     <div class="row d-flex gap-2 justify-content-end">
-                        <button class="btn btn-outline-danger mt-1" type="submit">LOGOUT</button>
                         <a href="{% url 'core:home' %}" class="btn btn-outline-info mt-1">NO. THANKS !</a>
+                        <button class="btn btn-outline-danger mt-1" type="submit">LOGOUT</button>
                     </div>
                 </form>
             </div>

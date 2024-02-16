@@ -37,13 +37,9 @@
                         <div class="sidebar_list">
                             <div class="sidebar_title">Categories</div>
                             <ul>
-                                <li><a href="#">Travel</a></li>
-                                <li><a href="#">Music</a></li>
-                                <li><a href="#">Lifestyle</a></li>
-                                <li><a href="#">Social Media</a></li>
-                                <li><a href="#">Art</a></li>
-                                <li><a href="#">Audiobooks</a></li>
-                                <li><a href="#">Documentaries</a></li>
+                                {% for object in categories %}
+                                <li><a href="#">{{ object.title }}</a></li>
+                               {% endfor %}
                             </ul>
                         </div>
 
@@ -51,17 +47,9 @@
                             <div class="sidebar_title">Tags</div>
                             <div class="tags">
                                 <ul class="d-flex flex-row align-items-start justify-content-start flex-wrap">
-                                    <li><a href="#">music</a></li>
-                                    <li><a href="#">art</a></li>
-                                    <li><a href="#">technology</a></li>
-                                    <li><a href="#">travel & food</a></li>
-                                    <li><a href="#">viral</a></li>
-                                    <li><a href="#">interview</a></li>
-                                    <li><a href="#">social media</a></li>
-                                    <li><a href="#">development</a></li>
-                                    <li><a href="#">success</a></li>
-                                    <li><a href="#">did you know?</a></li>
-                                    <li><a href="#">live</a></li>
+                                    {% for object in tags %}
+                                    <li><a href="#">{{ object.title }}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -91,19 +79,19 @@
 
                         <div class="row blog_post d-flex flex-md-row flex-column align-items-start justify-content-start">
                             <div class="col-md-12">
+                                {% for object in blogs %}
                                 <img src="{{ object.image.url }}"
                                      alt="https://unsplash.com/@kellysikkema">
-
+                                {% endfor %}
                             </div>
                             <div class="col-md-12">
-
+                                {% for object in blogs %}
                                     <div class="blog_post_title mt-4"><a href="#">{{ object.title }}</a></div>
                                     <div class="blog_post_author">By <a href="#">{{ object.author }}</a><h4><code>{{ object.created_date|date:'d F, Y' }}</code></h4></div>
                                     <div class="blog_post_text">
                                         <p>{{ object.content }}</p>
                                     </div>
-
-
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
