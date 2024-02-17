@@ -35,8 +35,8 @@ class RegisterView(View):
     def post(self, request, *args, **kwargs):
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save()
             if request.FILES:
-                ProfilePicture.objects.create(user=user, picture=request.FILES.get('image'))
+                ProfilePicture.objects.create(user_id=user.id, picture=request.FILES.get('image'))
                 messages.success(request, "Successfully registered")
         return redirect(reverse_lazy('contact:login'))

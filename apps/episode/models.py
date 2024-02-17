@@ -1,4 +1,5 @@
 import os
+from django.db.models import Q
 
 from django.db import models
 from django.core.validators import FileExtensionValidator
@@ -10,10 +11,22 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 
+class EpisodeFilter(BaseModel):
+    filter = models.CharField(max_length=221)
+    display = models.CharField(max_length=221)
+
+    def __str__(self):
+        return self.display
+
+    def safe_filter(self):
+        return self.filter[1:]
+
+
 class Episode(BaseModel):
     title = models.CharField(max_length=221)
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='episode/')
+    filter = models.ManyToManyField(EpisodeFilter, limit_choices_to=~Q(filter="*"))
     music = models.FileField(upload_to='episodes/', validators=[FileExtensionValidator(allowed_extensions=['mp3'])])
     slug = models.SlugField(max_length=221)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)

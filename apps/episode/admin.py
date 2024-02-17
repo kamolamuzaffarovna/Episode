@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Episode, Comment, EpisodeLike
+from .models import Episode, Comment, EpisodeLike, EpisodeFilter
 
 
 @admin.register(Episode)
@@ -9,7 +9,7 @@ class EpisodeAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
     search_fields = ('title', )
     list_filter = ('category', 'tags')
-    filter_horizontal = ('tags', )
+    filter_horizontal = ('tags', 'filter')
     autocomplete_fields = ('author', )
     save_on_top = True
 
@@ -28,3 +28,6 @@ class EpisodeLikeAdmin(admin.ModelAdmin):
     list_display = ('id', 'author', 'episode')
     search_fields = ('episode', )
     autocomplete_fields = ('episode', 'author')
+
+
+admin.site.register(EpisodeFilter)

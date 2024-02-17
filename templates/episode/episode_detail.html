@@ -198,7 +198,7 @@
                                     <div class="user_name"><a href="#">{{ object.author.username }}</a></div>
                                     <div class="comment_text">
                                         <p>{{ object.message }}</p>
-                                        <button type="submit" class="btn btn-outline-info mt-1">Reply</button>
+                                        <button type="submit" class="btn btn-outline-info mt-1" href="?pid={{ comments.id }}">Reply</button>
 
                                     </div>
                                     <ul class="children mt-3">
@@ -215,7 +215,7 @@
 
                                                     <div class="comment_text">
                                                         <p>{{ child.message }}</p>
-                                                        <button type="submit" class="btn btn-outline-info mt-1">
+                                                        <button type="submit" class="btn btn-outline-info mt-1" href="?pid={{ comments.id }}">
                                                             Reply
                                                         </button>
                                                     </div>
@@ -231,15 +231,8 @@
 
                             <form method="post" id="comment_form" class="comment_form">
                                 {% csrf_token %}
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        {{ object.comment.name }}
-                                    </div>
-                                    <div class="col-md-6">
-                                        {{ object.comment.image.url }}
-                                    </div>
+                                <div><textarea name="comment" class="comment_input comment_textarea" placeholder="Message" required="required"></textarea>
                                 </div>
-                                <div>{{ object.comment.message }}</div>
                                 <button class="comment_button button_fill" type="submit">Send</button>
                             </form>
 

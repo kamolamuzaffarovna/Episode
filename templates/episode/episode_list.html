@@ -9,7 +9,8 @@
 
 {% block content %}
     <div class="home">
-        <div class="parallax_background parallax-window" data-parallax="scroll" data-image-src="{% static 'images/about (1).jpg' %}"
+        <div class="parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{% static 'images/about (1).jpg' %}"
              data-speed="0.8"></div>
         <div class="home_container d-flex flex-column align-items-center justify-content-center">
             <div class="home_content">
@@ -18,16 +19,15 @@
         </div>
     </div>
 
-    <div class="episodes">
+    <div class="episodes" id="episodes">
         <div class="container">
             <div class="row">
                 <div class="col">
                     <div class="season_links">
                         <ul class="d-flex flex-row align-items-start justify-content-center flex-wrap">
-                            <li class="item_filter_btn" data-filter="*">All Seasons</li>
-                            <li class="item_filter_btn" data-filter=".s1">Season 1</li>
-                            <li class="item_filter_btn" data-filter=".s2">Season 2</li>
-                            <li class="item_filter_btn" data-filter=".s3">Season 3</li>
+                            {% for f in filter %}
+                                <li class="item_filter_btn" data-filter=".{{ f.filter }}">{{ f.display }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
@@ -48,13 +48,9 @@
                         <div class="sidebar_list">
                             <div class="sidebar_title">Categories</div>
                             <ul>
-                                <li><a href="#">Travel</a></li>
-                                <li><a href="#">Music</a></li>
-                                <li><a href="#">Lifestyle</a></li>
-                                <li><a href="#">Social Media</a></li>
-                                <li><a href="#">Art</a></li>
-                                <li><a href="#">Audiobooks</a></li>
-                                <li><a href="#">Documentaries</a></li>
+                                {% for object in categories %}
+                                    <li><a href="#">{{ object.title }}</a></li>
+                                {% endfor %}
                             </ul>
                         </div>
 
@@ -62,17 +58,9 @@
                             <div class="sidebar_title">Tags</div>
                             <div class="tags">
                                 <ul class="d-flex flex-row align-items-start justify-content-start flex-wrap">
-                                    <li><a href="#">music</a></li>
-                                    <li><a href="#">art</a></li>
-                                    <li><a href="#">technology</a></li>
-                                    <li><a href="#">travel & food</a></li>
-                                    <li><a href="#">viral</a></li>
-                                    <li><a href="#">interview</a></li>
-                                    <li><a href="#">social media</a></li>
-                                    <li><a href="#">development</a></li>
-                                    <li><a href="#">success</a></li>
-                                    <li><a href="#">did you know?</a></li>
-                                    <li><a href="#">live</a></li>
+                                    {% for object in tags %}
+                                        <li><a href="#">{{ object.title }}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -99,87 +87,91 @@
 
                 <div class="col-lg-9 episodes_col">
                     <div class="episodes_container">
-                       {% for object in object_list %}
-                        <div class="episode d-flex flex-row align-items-start justify-content-start s1">
-                            <div>
-                                <div class="episode_image">
-                                    <img src="{{ object.image.url }}" alt>
-                                    <div class="tags">
-                                        <ul class="d-flex flex-row align-items-start justify-content-start">
-                                            <li><a href="#">{{ object.category.title }}</a></li>
-                                        </ul>
+                        {% for object in object_list %}
+                            <div class="episode d-flex flex-row align-items-start justify-content-start {% for c in object.filter.all %}{{ c.safe_filter }}{% endfor %}">
+                                <div>
+                                    <div class="episode_image">
+                                        <img src="{{ object.image.url }}" alt>
+                                        <div class="tags">
+                                            <ul class="d-flex flex-row align-items-start justify-content-start">
+                                                <li><a href="#">{{ object.category.title }}</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="episode_content">
-                                <div class="episode_name"><a href="{% url 'episode:detail' %}">{{ object.title }}</a></div>
-                                <div class="episode_date"><a href="#">{{ object.created_date|date:'d F, Y'}}</a></div>
-                                <div class="show_info d-flex flex-row align-items-start justify-content-start">
-                                    <div class="show_fav d-flex flex-row align-items-center justify-content-start">
-                                        <div class="show_fav_icon show_info_icon"><img class="svg"
-                                                                                       src="{% static 'images/heart.svg' %}" alt></div>
-                                        <div class="show_fav_count">{{ object.likes.count }}</div>
+                                <div class="episode_content">
+                                    <div class="episode_name"><a
+                                            href="{% url 'episode:detail' %}">{{ object.title }}</a></div>
+                                    <div class="episode_date"><a href="#">{{ object.created_date|date:'d F, Y' }}</a>
                                     </div>
-                                    <div class="show_comments">
-                                        <a href="#">
-                                            <div class="d-flex flex-row align-items-center justify-content-start">
-                                                <div class="show_comments_icon show_info_icon"><img class="svg"
-                                                                                                    src="{% static 'images/speech-bubble.svg' %}"
-                                                                                                    alt></div>
-                                                <div class="show_comments_count">{{ object.comments.count }}</div>
-                                            </div>
-                                        </a>
+                                    <div class="show_info d-flex flex-row align-items-start justify-content-start">
+                                        <div class="show_fav d-flex flex-row align-items-center justify-content-start">
+                                            <div class="show_fav_icon show_info_icon"><img class="svg"
+                                                                                           src="{% static 'images/heart.svg' %}"
+                                                                                           alt></div>
+                                            <div class="show_fav_count">{{ object.likes.count }}</div>
+                                        </div>
+                                        <div class="show_comments">
+                                            <a href="#">
+                                                <div class="d-flex flex-row align-items-center justify-content-start">
+                                                    <div class="show_comments_icon show_info_icon"><img class="svg"
+                                                                                                        src="{% static 'images/speech-bubble.svg' %}"
+                                                                                                        alt></div>
+                                                    <div class="show_comments_count">{{ object.comments.count }}</div>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="single_player_container">
-                                    <div class="single_player d-flex flex-row align-items-center justify-content-start">
-                                        <div id="jplayer_1" class="jp-jplayer"></div>
-                                        <div id="jp_container_1" class="jp-audio" role="application"
-                                             aria-label="media player">
-                                            <div class="jp-type-single">
-                                                <div class="player_controls">
-                                                    <div class="jp-gui jp-interface d-flex flex-row align-items-center justify-content-start">
-                                                        <div class="jp-controls-holder time_controls d-flex flex-row align-items-center justify-content-between">
-                                                            <div>
-                                                                <div class="jp-controls-holder play_button ml-auto">
-                                                                    <button class="jp-play" tabindex="0"></button>
+                                    <div class="single_player_container">
+                                        <div class="single_player d-flex flex-row align-items-center justify-content-start">
+                                            <div id="jplayer_1" class="jp-jplayer"></div>
+                                            <div id="jp_container_1" class="jp-audio" role="application"
+                                                 aria-label="media player">
+                                                <div class="jp-type-single">
+                                                    <div class="player_controls">
+                                                        <div class="jp-gui jp-interface d-flex flex-row align-items-center justify-content-start">
+                                                            <div class="jp-controls-holder time_controls d-flex flex-row align-items-center justify-content-between">
+                                                                <div>
+                                                                    <div class="jp-controls-holder play_button ml-auto">
+                                                                        <button class="jp-play" tabindex="0"></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="jp-progress">
+                                                                        <div class="jp-seek-bar">
+                                                                            <div class="jp-play-bar"></div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div>
-                                                                <div class="jp-progress">
-                                                                    <div class="jp-seek-bar">
-                                                                        <div class="jp-play-bar"></div>
+                                                            <div class="jp-volume-controls d-flex flex-row align-items-center justify-content-between ml-auto">
+                                                                <div class="d-flex flex-row align-items-center justify-content-start">
+                                                                    <button class="jp-mute" tabindex="0"></button>
+                                                                </div>
+                                                                <div class="d-flex flex-row align-items-center justify-content-start">
+                                                                    <div class="jp-volume-bar">
+                                                                        <div class="jp-volume-bar-value"></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="jp-volume-controls d-flex flex-row align-items-center justify-content-between ml-auto">
-                                                            <div class="d-flex flex-row align-items-center justify-content-start">
-                                                                <button class="jp-mute" tabindex="0"></button>
-                                                            </div>
-                                                            <div class="d-flex flex-row align-items-center justify-content-start">
-                                                                <div class="jp-volume-bar">
-                                                                    <div class="jp-volume-bar-value"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="jp-no-solution">
-                                                    <span>Update Required</span>
-                                                    To play the media you will need to either update your browser to a
-                                                    recent version or update your <a
-                                                        href="http://get.adobe.com/flashplayer/" target="_blank">Flash
-                                                    plugin</a>
+                                                    <div class="jp-no-solution">
+                                                        <span>Update Required</span>
+                                                        To play the media you will need to either update your browser to
+                                                        a
+                                                        recent version or update your <a
+                                                            href="http://get.adobe.com/flashplayer/" target="_blank">Flash
+                                                        plugin</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor%}
+                        {% endfor %}
 
                     </div>
                 </div>
@@ -188,11 +180,18 @@
                 <div class="col">
                     <div class="page_nav d-flex flex-row align-items-center justify-content-center">
                         <ul class="d-flex flex-row">
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#"><i class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page={{ page_obj.previous_page_number }}#episodes"><i
+                                        class="fa fa-angle-double-left" aria-hidden="true"></i></a></li>
+                            {% endif %}
+                            {% for p in page_obj.paginator.page_range %}
+                                <li class="{% if p == page_obj.number %}active{% endif %}"><a
+                                        href="?page={{ p }}">{{ p }}</a></li>
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}#episodes"><i
+                                        class="fa fa-angle-double-right" aria-hidden="true"></i></a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
